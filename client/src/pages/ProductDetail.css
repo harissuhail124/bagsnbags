@@ -1,0 +1,328 @@
+/* Product Detail Page Styles */
+.product-detail-page {
+  padding: var(--space-6) 0 var(--space-10);
+}
+
+.breadcrumbs {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-secondary-text);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-primary-text);
+}
+
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+}
+
+@media (min-width: 900px) {
+  .product-detail-grid {
+    grid-template-columns: 1.15fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+/* Gallery */
+.gallery-container {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .gallery-container {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+}
+
+.gallery-thumbs {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .gallery-thumbs {
+    flex-direction: column;
+    width: 80px;
+    flex-shrink: 0;
+  }
+}
+
+.gallery-thumb-btn {
+  aspect-ratio: 4 / 5;
+  width: 70px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-neutral-muted);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+}
+
+@media (min-width: 768px) {
+  .gallery-thumb-btn {
+    width: 100%;
+  }
+}
+
+.gallery-thumb-btn.active, .gallery-thumb-btn:hover {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+.gallery-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-main-frame {
+  flex: 1;
+  aspect-ratio: 4 / 5;
+  background-color: var(--color-neutral-muted);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+}
+
+.gallery-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 250ms ease;
+}
+
+.gallery-main-frame:hover .gallery-main-img {
+  transform: scale(1.15);
+}
+
+/* Product Info Column */
+.product-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pdp-category {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.pdp-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  color: var(--color-primary-text);
+  line-height: 1.2;
+}
+
+.pdp-price-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pdp-price {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--color-primary-text);
+}
+
+.pdp-stock-indicator {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.pdp-description {
+  color: var(--color-secondary-text);
+  font-size: 0.96rem;
+  line-height: 1.7;
+}
+
+/* Specs Badges Row */
+.pdp-specs-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdp-spec-item {
+  font-size: 0.78rem;
+  color: var(--color-secondary-text);
+}
+
+.pdp-spec-item strong {
+  color: var(--color-primary-text);
+  font-weight: 500;
+}
+
+/* Actions */
+.pdp-actions-row {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.pdp-qty-picker {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+}
+
+.pdp-qty-btn {
+  padding: 10px 14px;
+  color: var(--color-primary-text);
+}
+
+.pdp-qty-num {
+  font-size: 0.92rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+.pdp-add-btn {
+  flex: 1;
+  padding: 14px 24px;
+}
+
+/* Accordions */
+.pdp-accordions {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.pdp-accordion-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pdp-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-primary-text);
+  cursor: pointer;
+}
+
+.pdp-accordion-content {
+  padding-bottom: var(--space-3);
+  font-size: 0.9rem;
+  color: var(--color-secondary-text);
+  line-height: 1.65;
+}
+
+.pdp-details-list {
+  padding-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Reviews Section */
+.pdp-reviews-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.reviews-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.review-item {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+}
+
+.review-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.review-author-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--color-primary-text);
+}
+
+.review-verified-badge {
+  font-size: 0.7rem;
+  color: var(--color-success);
+  margin-left: 8px;
+}
+
+.review-item-title {
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--color-primary-text);
+  margin-bottom: 4px;
+}
+
+.review-item-comment {
+  font-size: 0.88rem;
+  color: var(--color-secondary-text);
+  line-height: 1.6;
+}
+
+/* Review Form */
+.review-form-wrap {
+  margin-top: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+}
+
+.review-form-wrap h4 {
+  margin-bottom: var(--space-3);
+}
+
+.review-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

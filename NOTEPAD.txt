@@ -1,0 +1,5 @@
+
+MONGO DB ATLAS: 
+DB Name and Password
+bags-n-bags
+BdqK8brwXM_TNSi

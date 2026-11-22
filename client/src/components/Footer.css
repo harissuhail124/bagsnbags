@@ -1,0 +1,133 @@
+.site-footer {
+  background-color: #24201D;
+  color: #D3CDC6;
+  padding: var(--space-8) 0 var(--space-5);
+  margin-top: var(--space-10);
+  border-top: 1px solid #332E2A;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 600px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: var(--space-6);
+  }
+}
+
+.footer-brand .footer-logo {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: #FAF8F5;
+  margin-bottom: var(--space-2);
+}
+
+.footer-tagline {
+  color: #A39B92;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.footer-col-title {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #FAF8F5;
+  margin-bottom: var(--space-3);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  color: #A39B92;
+  font-size: 0.88rem;
+  transition: color var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: #FAF8F5;
+}
+
+.footer-newsletter-text {
+  font-size: 0.88rem;
+  color: #A39B92;
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+}
+
+.footer-newsletter-form {
+  display: flex;
+  gap: 8px;
+}
+
+.footer-newsletter-form input {
+  background-color: #1A1715;
+  border: 1px solid #3D3732;
+  color: #FAF8F5;
+  font-size: 0.85rem;
+  flex: 1;
+}
+
+.footer-newsletter-form input::placeholder {
+  color: #7A726A;
+}
+
+.footer-newsletter-form input:focus {
+  border-color: var(--color-accent);
+}
+
+.footer-newsletter-form button {
+  padding: 10px 16px;
+  background-color: var(--color-accent);
+  color: #FAF8F5;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer-newsletter-form button:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.footer-bottom {
+  padding-top: var(--space-4);
+  border-top: 1px solid #332E2A;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #7A726A;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+  }
+}
+
+.payment-methods-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #7A726A;
+}
