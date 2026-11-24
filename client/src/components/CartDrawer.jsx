@@ -56,7 +56,7 @@ export default function CartDrawer() {
         <div className="cart-shipping-notice">
           {amountNeededForFreeShipping > 0 ? (
             <p>
-              Add <strong>${amountNeededForFreeShipping.toFixed(2)}</strong> more for complimentary shipping.
+              Add <strong>PKR {amountNeededForFreeShipping.toLocaleString()}</strong> more for complimentary shipping.
             </p>
           ) : (
             <p><strong>Complimentary shipping unlocked.</strong></p>
@@ -97,7 +97,7 @@ export default function CartDrawer() {
                       <h4 className="cart-item-title">{item.product.title}</h4>
                       {item.variant && <span className="cart-item-variant">{item.variant}</span>}
                     </div>
-                    <span className="cart-item-price">${((item.product.price || 0) * item.quantity).toFixed(2)}</span>
+                    <span className="cart-item-price">PKR {((item.product.price || 0) * item.quantity).toLocaleString()}</span>
                   </div>
 
                   <div className="cart-item-actions">
@@ -137,7 +137,7 @@ export default function CartDrawer() {
           <div className="cart-drawer-footer">
             {promoCode ? (
               <div className="promo-applied-tag">
-                <span>Code {promoCode.code} applied (-${discountAmount.toFixed(2)})</span>
+                <span>Code {promoCode.code} applied (-PKR {discountAmount.toLocaleString()})</span>
                 <span className="promo-remove-link" onClick={removePromo}>Remove</span>
               </div>
             ) : (
@@ -157,24 +157,24 @@ export default function CartDrawer() {
 
             <div className="cart-totals-row">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>PKR {subtotal.toLocaleString()}</span>
             </div>
 
             {discountAmount > 0 && (
               <div className="cart-totals-row">
                 <span>Discount</span>
-                <span>-${discountAmount.toFixed(2)}</span>
+                <span>-PKR {discountAmount.toLocaleString()}</span>
               </div>
             )}
 
             <div className="cart-totals-row">
               <span>Shipping</span>
-              <span>{shippingFee === 0 ? 'Complimentary' : `$${shippingFee.toFixed(2)}`}</span>
+              <span>{shippingFee === 0 ? 'Complimentary' : `PKR ${shippingFee.toLocaleString()}`}</span>
             </div>
 
             <div className="cart-totals-row grand-total">
               <span>Total</span>
-              <span>${grandTotal.toFixed(2)}</span>
+              <span>PKR {grandTotal.toLocaleString()}</span>
             </div>
 
             <button className="btn btn-primary" onClick={handleCheckoutClick}>

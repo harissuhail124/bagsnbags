@@ -85,7 +85,7 @@ export default function CartPage() {
                           </div>
                         )}
                         <div style={{ fontSize: '0.85rem', color: 'var(--color-secondary-text)', marginTop: '2px' }}>
-                          ${(item.product.price || 0).toFixed(2)} each
+                          PKR {(item.product.price || 0).toLocaleString()} each
                         </div>
                       </div>
                     </div>
@@ -112,7 +112,7 @@ export default function CartPage() {
                   </td>
 
                   <td style={{ fontWeight: 500 }}>
-                    ${((item.product.price || 0) * item.quantity).toFixed(2)}
+                    PKR {((item.product.price || 0) * item.quantity).toLocaleString()}
                   </td>
 
                   <td style={{ textAlign: 'right' }}>
@@ -136,7 +136,7 @@ export default function CartPage() {
 
           {promoCode ? (
             <div className="promo-applied-tag">
-              <span>Code {promoCode.code} applied (-${discountAmount.toFixed(2)})</span>
+              <span>Code {promoCode.code} applied (-PKR {discountAmount.toLocaleString()})</span>
               <span className="promo-remove-link" onClick={removePromo}>Remove</span>
             </div>
           ) : (
@@ -156,24 +156,24 @@ export default function CartPage() {
 
           <div className="summary-row">
             <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>PKR {subtotal.toLocaleString()}</span>
           </div>
 
           {discountAmount > 0 && (
             <div className="summary-row">
               <span>Promotional Discount</span>
-              <span>-${discountAmount.toFixed(2)}</span>
+              <span>-PKR {discountAmount.toLocaleString()}</span>
             </div>
           )}
 
           <div className="summary-row">
             <span>Insured Standard Shipping</span>
-            <span>{shippingFee === 0 ? 'Complimentary' : `$${shippingFee.toFixed(2)}`}</span>
+            <span>{shippingFee === 0 ? 'Complimentary' : `PKR ${shippingFee.toLocaleString()}`}</span>
           </div>
 
           <div className="summary-row total">
             <span>Estimated Total</span>
-            <span>${grandTotal.toFixed(2)}</span>
+            <span>PKR {grandTotal.toLocaleString()}</span>
           </div>
 
           <button

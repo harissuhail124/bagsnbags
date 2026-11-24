@@ -350,7 +350,7 @@ export default function Admin() {
           <div className="admin-stats-grid">
             <div className="stat-card">
               <span className="stat-card-label">Gross Paid Revenue</span>
-              <span className="stat-card-value">${dashboardData.stats?.totalRevenue?.toFixed(2)}</span>
+              <span className="stat-card-value">PKR {(dashboardData.stats?.totalRevenue || 0).toLocaleString()}</span>
             </div>
             <div className="stat-card">
               <span className="stat-card-label">Orders Placed Today</span>
@@ -398,10 +398,10 @@ export default function Admin() {
                     <div>
                       <strong>{ord.orderNumber}</strong> &middot; {ord.customerName}
                       <div style={{ fontSize: '0.75rem', color: 'var(--color-secondary-text)' }}>
-                        {ord.paymentMethod.toUpperCase()} &middot; {ord.status.toUpperCase()}
+                        {ord.paymentMethod?.toUpperCase()} &middot; {ord.status.toUpperCase()}
                       </div>
                     </div>
-                    <span style={{ fontWeight: 600 }}>${ord.totalAmount.toFixed(2)}</span>
+                    <span style={{ fontWeight: 600 }}>PKR {ord.totalAmount.toLocaleString()}</span>
                   </div>
                 ))}
               </div>
@@ -466,7 +466,7 @@ export default function Admin() {
                       </div>
                     </td>
                     <td>{p.category?.name || 'Unassigned'}</td>
-                    <td>${p.price.toFixed(2)}</td>
+                    <td>PKR {p.price.toLocaleString()}</td>
                     <td>
                       <span className={`badge ${p.stock <= 5 ? 'badge-low-stock' : ''}`}>
                         {p.stock}
@@ -580,11 +580,17 @@ export default function Admin() {
                     <div>{ord.customerName}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--color-secondary-text)' }}>{ord.customerEmail}</div>
                   </td>
-                  <td>${ord.totalAmount.toFixed(2)}</td>
+                  <td>PKR {ord.totalAmount.toLocaleString()}</td>
                   <td>
-                    <span className={`badge ${ord.paymentStatus === 'paid' ? 'badge-success' : ''}`}>
-                      {ord.paymentStatus}
-                    </span>
+                    <div>
+                      <span className={`badge ${ord.paymentStatus === 'paid' ? 'badge-success' : ''}`}>
+                        {ord.paymentStatus}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--color-secondary-text)', marginTop: '3px' }}>
+                      {ord.paymentMethod?.toUpperCase()}
+                      {ord.paymentDetails?.accountNumber && ` (${ord.paymentDetails.accountNumber})`}
+                    </div>
                   </td>
                   <td>
                     <span className="badge">{ord.status}</span>
@@ -633,7 +639,7 @@ export default function Admin() {
                   <td><strong>{c.name}</strong></td>
                   <td>{c.email}</td>
                   <td>{c.orderCount || 0}</td>
-                  <td>${(c.totalSpent || 0).toFixed(2)}</td>
+                  <td>PKR {(c.totalSpent || 0).toLocaleString()}</td>
                   <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
@@ -668,7 +674,7 @@ export default function Admin() {
                 {promos.map((pr) => (
                   <tr key={pr._id}>
                     <td><strong>{pr.code}</strong></td>
-                    <td>{pr.discountType === 'percentage' ? `${pr.discountValue}%` : `$${pr.discountValue}`}</td>
+                    <td>{pr.discountType === 'percentage' ? `${pr.discountValue}%` : `PKR ${pr.discountValue.toLocaleString()}`}</td>
                     <td>{pr.usedCount} {pr.usageLimit ? `/ ${pr.usageLimit}` : ''}</td>
                     <td>
                       <span className={`badge ${pr.active ? 'badge-success' : ''}`}>
@@ -804,7 +810,7 @@ export default function Admin() {
                 </div>
 
                 <div className="form-group">
-                  <label>Price ($) *</label>
+                  <label>Price (PKR) *</label>
                   <input
                     type="number"
                     step="0.01"
@@ -1203,7 +1209,7 @@ export default function Admin() {
                     onChange={(e) => setPromoForm({ ...promoForm, discountType: e.target.value })}
                   >
                     <option value="percentage">Percentage (%)</option>
-                    <option value="fixed">Fixed Dollar ($)</option>
+                    <option value="fixed">Fixed PKR</option>
                   </select>
                 </div>
                 <div className="form-group">

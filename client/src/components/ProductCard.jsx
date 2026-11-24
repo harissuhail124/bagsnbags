@@ -84,7 +84,7 @@ export default function ProductCard({ product, inWishlist = false, onWishlistCha
         <Link to={`/product/${product.slug}`} className="product-card-title">
           {product.title}
         </Link>
-        <span className="product-card-price">${product.price.toFixed(2)}</span>
+        <span className="product-card-price">PKR {product.price.toLocaleString()}</span>
         {product.rating > 0 && (
           <div className="product-card-rating">
             <Star size={11} fill="#8A6F55" color="#8A6F55" />

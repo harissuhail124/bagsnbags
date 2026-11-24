@@ -15,7 +15,7 @@ export default function ShippingReturns() {
             Complimentary Shipping Threshold
           </h3>
           <p style={{ color: 'var(--color-secondary-text)' }}>
-            All orders with a subtotal of $150 or greater receive complimentary standard insured courier delivery. For orders below $150, a flat $15 delivery fee covers trackable domestic dispatch.
+            All orders with a subtotal of PKR 150 or greater receive complimentary standard insured courier delivery. For orders below PKR 150, a flat PKR 15 delivery fee covers trackable domestic dispatch.
           </p>
         </section>
 

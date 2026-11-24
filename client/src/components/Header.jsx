@@ -26,7 +26,7 @@ export default function Header() {
     <>
       {/* Announcement Bar */}
       <div className="announcement-bar">
-        Complimentary standard shipping on orders over $150 &middot; Handcrafted in small editions
+        Complimentary standard shipping on orders over PKR 150 &middot; Handcrafted in small editions
       </div>
 
       <header className="site-header">

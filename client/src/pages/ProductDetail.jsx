@@ -206,7 +206,7 @@ export default function ProductDetail() {
           <h1 className="pdp-title">{product.title}</h1>
 
           <div className="pdp-price-row">
-            <span className="pdp-price">${product.price.toFixed(2)}</span>
+            <span className="pdp-price">PKR {product.price.toLocaleString()}</span>
             {isOutOfStock ? (
               <span className="badge badge-out-of-stock">Sold Out</span>
             ) : isLowStock ? (
@@ -338,7 +338,7 @@ export default function ProductDetail() {
               {openAccordion === 'shipping' && (
                 <div className="pdp-accordion-content">
                   <p>
-                    Complimentary standard shipping on all orders over $150. Delivery within 3&ndash;5 business days. Each bag comes protected inside an unbleached organic linen dust cover. We accept returns within 30 days of arrival in original condition.
+                    Complimentary standard shipping on all orders over PKR 150. Delivery within 3&ndash;5 business days. Each bag comes protected inside an unbleached organic linen dust cover. We accept returns within 30 days of arrival in original condition.
                   </p>
                 </div>
               )}

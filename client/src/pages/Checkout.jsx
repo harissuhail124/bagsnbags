@@ -19,8 +19,10 @@ export default function Checkout() {
     city: '',
     state: '',
     postalCode: '',
-    country: 'United States',
-    paymentMethod: 'stripe', // 'stripe' | 'cod'
+    country: 'Pakistan',
+    paymentMethod: 'cod', // 'cod' | 'jazzcash' | 'easypaisa' | 'stripe'
+    paymentAccount: '',
+    paymentTxId: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -77,6 +79,10 @@ export default function Checkout() {
           country: formData.country,
         },
         paymentMethod: formData.paymentMethod,
+        paymentDetails: {
+          accountNumber: formData.paymentAccount || '',
+          transactionId: formData.paymentTxId || '',
+        },
         promoCode: promoCode?.code || null,
       };
 
@@ -200,7 +206,7 @@ export default function Checkout() {
                   id="city"
                   type="text"
                   name="city"
-                  placeholder="New York"
+                  placeholder="Lahore / Karachi"
                   value={formData.city}
                   onChange={handleChange}
                 />
@@ -208,12 +214,12 @@ export default function Checkout() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="state">State / Region *</label>
+                <label htmlFor="state">Province / Region *</label>
                 <input
                   id="state"
                   type="text"
                   name="state"
-                  placeholder="NY"
+                  placeholder="Punjab / Sindh"
                   value={formData.state}
                   onChange={handleChange}
                 />
@@ -226,7 +232,7 @@ export default function Checkout() {
                   id="postalCode"
                   type="text"
                   name="postalCode"
-                  placeholder="10012"
+                  placeholder="54000"
                   value={formData.postalCode}
                   onChange={handleChange}
                 />
@@ -249,7 +255,7 @@ export default function Checkout() {
                 </p>
               </div>
               <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>
-                {shippingFee === 0 ? 'Complimentary' : `$${shippingFee.toFixed(2)}`}
+                {shippingFee === 0 ? 'Complimentary' : `PKR ${shippingFee.toLocaleString()}`}
               </span>
             </div>
           </div>
@@ -262,43 +268,157 @@ export default function Checkout() {
             </h3>
 
             <div className="payment-methods-group">
-              <label
-                className={`payment-option-card ${formData.paymentMethod === 'stripe' ? 'selected' : ''}`}
-              >
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="stripe"
-                  checked={formData.paymentMethod === 'stripe'}
-                  onChange={handleChange}
-                  style={{ accentColor: 'var(--color-accent)' }}
-                />
-                <div>
-                  <span className="payment-option-title">Stripe Checkout (Cards, Apple Pay, Google Pay)</span>
-                  <p className="payment-option-desc">
-                    Secure encrypted test-mode checkout via Stripe.
-                  </p>
-                </div>
-              </label>
+              {/* Cash on Delivery */}
+              <div className="payment-option-card-wrapper">
+                <label className={`payment-option-card ${formData.paymentMethod === 'cod' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cod"
+                    checked={formData.paymentMethod === 'cod'}
+                    onChange={handleChange}
+                    style={{ accentColor: 'var(--color-accent)' }}
+                  />
+                  <div>
+                    <span className="payment-option-title">Cash on Delivery (COD)</span>
+                    <p className="payment-option-desc">
+                      Pay the courier representative in cash upon package handover and inspection.
+                    </p>
+                  </div>
+                </label>
+              </div>
 
-              <label
-                className={`payment-option-card ${formData.paymentMethod === 'cod' ? 'selected' : ''}`}
-              >
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cod"
-                  checked={formData.paymentMethod === 'cod'}
-                  onChange={handleChange}
-                  style={{ accentColor: 'var(--color-accent)' }}
-                />
-                <div>
-                  <span className="payment-option-title">Cash on Delivery (COD)</span>
-                  <p className="payment-option-desc">
-                    Pay the carrier in cash upon package handover and inspection.
-                  </p>
-                </div>
-              </label>
+              {/* JazzCash */}
+              <div className="payment-option-card-wrapper">
+                <label className={`payment-option-card ${formData.paymentMethod === 'jazzcash' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="jazzcash"
+                    checked={formData.paymentMethod === 'jazzcash'}
+                    onChange={handleChange}
+                    style={{ accentColor: 'var(--color-accent)' }}
+                  />
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="payment-option-title">JazzCash Mobile Wallet</span>
+                      <span className="payment-badge-tag jazzcash">JazzCash</span>
+                    </div>
+                    <p className="payment-option-desc">
+                      Direct instant transfer via your JazzCash app or mobile account.
+                    </p>
+                  </div>
+                </label>
+
+                {formData.paymentMethod === 'jazzcash' && (
+                  <div className="payment-details-nested">
+                    <p style={{ marginBottom: '8px', lineHeight: 1.5 }}>
+                      <strong>Atelier Account Title:</strong> Bags'n'Bags Official<br />
+                      <strong>JazzCash Mobile / Till:</strong> <span style={{ color: 'var(--color-accent)', fontWeight: 600 }}>0300-1234567</span>
+                    </p>
+                    <div className="form-row two-col" style={{ marginBottom: 0 }}>
+                      <div className="form-group">
+                        <label htmlFor="jazzcash-acc">Your JazzCash Mobile No.</label>
+                        <input
+                          id="jazzcash-acc"
+                          type="text"
+                          name="paymentAccount"
+                          placeholder="03XXXXXXXXX"
+                          value={formData.paymentAccount}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="jazzcash-tx">Transaction ID / TID (Optional)</label>
+                        <input
+                          id="jazzcash-tx"
+                          type="text"
+                          name="paymentTxId"
+                          placeholder="e.g. 1029384756"
+                          value={formData.paymentTxId}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* EasyPaisa */}
+              <div className="payment-option-card-wrapper">
+                <label className={`payment-option-card ${formData.paymentMethod === 'easypaisa' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="easypaisa"
+                    checked={formData.paymentMethod === 'easypaisa'}
+                    onChange={handleChange}
+                    style={{ accentColor: 'var(--color-accent)' }}
+                  />
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="payment-option-title">EasyPaisa Mobile Wallet</span>
+                      <span className="payment-badge-tag easypaisa">EasyPaisa</span>
+                    </div>
+                    <p className="payment-option-desc">
+                      Fast mobile transfer through your EasyPaisa wallet or app.
+                    </p>
+                  </div>
+                </label>
+
+                {formData.paymentMethod === 'easypaisa' && (
+                  <div className="payment-details-nested">
+                    <p style={{ marginBottom: '8px', lineHeight: 1.5 }}>
+                      <strong>Atelier Account Title:</strong> Bags'n'Bags Official<br />
+                      <strong>EasyPaisa Mobile Number:</strong> <span style={{ color: 'var(--color-accent)', fontWeight: 600 }}>0345-1234567</span>
+                    </p>
+                    <div className="form-row two-col" style={{ marginBottom: 0 }}>
+                      <div className="form-group">
+                        <label htmlFor="easypaisa-acc">Your EasyPaisa Mobile No.</label>
+                        <input
+                          id="easypaisa-acc"
+                          type="text"
+                          name="paymentAccount"
+                          placeholder="03XXXXXXXXX"
+                          value={formData.paymentAccount}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="easypaisa-tx">Transaction ID / TID (Optional)</label>
+                        <input
+                          id="easypaisa-tx"
+                          type="text"
+                          name="paymentTxId"
+                          placeholder="e.g. 9876543210"
+                          value={formData.paymentTxId}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Stripe / Cards */}
+              <div className="payment-option-card-wrapper">
+                <label className={`payment-option-card ${formData.paymentMethod === 'stripe' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="stripe"
+                    checked={formData.paymentMethod === 'stripe'}
+                    onChange={handleChange}
+                    style={{ accentColor: 'var(--color-accent)' }}
+                  />
+                  <div>
+                    <span className="payment-option-title">Stripe Checkout (Cards, Apple Pay)</span>
+                    <p className="payment-option-desc">
+                      Pay via Visa, MasterCard, and international debit/credit cards.
+                    </p>
+                  </div>
+                </label>
+              </div>
             </div>
           </div>
 
@@ -311,8 +431,12 @@ export default function Checkout() {
             {submitting
               ? 'Processing Order...'
               : formData.paymentMethod === 'stripe'
-              ? `Proceed to Stripe Payment ($${grandTotal.toFixed(2)})`
-              : `Place Order with Cash on Delivery ($${grandTotal.toFixed(2)})`}
+              ? `Proceed to Stripe Payment (PKR ${grandTotal.toLocaleString()})`
+              : formData.paymentMethod === 'jazzcash'
+              ? `Confirm Order with JazzCash (PKR ${grandTotal.toLocaleString()})`
+              : formData.paymentMethod === 'easypaisa'
+              ? `Confirm Order with EasyPaisa (PKR ${grandTotal.toLocaleString()})`
+              : `Place Order with Cash on Delivery (PKR ${grandTotal.toLocaleString()})`}
           </button>
         </form>
 
@@ -336,7 +460,7 @@ export default function Checkout() {
                   </div>
                 </div>
                 <div style={{ fontWeight: 500 }}>
-                  ${((item.product.price || 0) * item.quantity).toFixed(2)}
+                  PKR {((item.product.price || 0) * item.quantity).toLocaleString()}
                 </div>
               </div>
             ))}
@@ -344,24 +468,24 @@ export default function Checkout() {
 
           <div className="summary-row">
             <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
+            <span>PKR {subtotal.toLocaleString()}</span>
           </div>
 
           {discountAmount > 0 && (
             <div className="summary-row" style={{ color: 'var(--color-success)' }}>
               <span>Promo {promoCode?.code}</span>
-              <span>-${discountAmount.toFixed(2)}</span>
+              <span>-PKR {discountAmount.toLocaleString()}</span>
             </div>
           )}
 
           <div className="summary-row">
             <span>Shipping</span>
-            <span>{shippingFee === 0 ? 'Complimentary' : `$${shippingFee.toFixed(2)}`}</span>
+            <span>{shippingFee === 0 ? 'Complimentary' : `PKR ${shippingFee.toLocaleString()}`}</span>
           </div>
 
           <div className="summary-row total">
             <span>Total Due</span>
-            <span>${grandTotal.toFixed(2)}</span>
+            <span>PKR {grandTotal.toLocaleString()}</span>
           </div>
         </aside>
       </div>

@@ -30,7 +30,8 @@ const createOrder = async (req, res, next) => {
     customerEmail,
     items,
     shippingAddress,
-    paymentMethod, // 'stripe' | 'cod'
+    paymentMethod, // 'stripe' | 'cod' | 'jazzcash' | 'easypaisa'
+    paymentDetails,
     promoCode,
   } = req.body;
 
@@ -110,6 +111,7 @@ const createOrder = async (req, res, next) => {
     totalAmount,
     shippingAddress,
     paymentMethod,
+    paymentDetails: paymentDetails || {},
     paymentStatus: 'pending',
     status: 'pending',
     promoCode: promoDoc?.code || null,
@@ -183,12 +185,19 @@ const createOrder = async (req, res, next) => {
     }
   }
 
-  // Cash on Delivery – Send order confirmation email immediately
+  // Manual payment methods (COD, JazzCash, EasyPaisa) – Send confirmation email
+  let paymentMethodLabel = 'Cash on Delivery';
+  if (paymentMethod === 'jazzcash') {
+    paymentMethodLabel = `JazzCash Mobile Wallet (0300-1234567, Title: Bags'n'Bags)`;
+  } else if (paymentMethod === 'easypaisa') {
+    paymentMethodLabel = `EasyPaisa Mobile Wallet (0345-1234567, Title: Bags'n'Bags)`;
+  }
+
   try {
     await sendEmail({
       to: customerEmail,
       subject: `Order Confirmation – #${order.orderNumber}`,
-      text: `Hello ${customerName},\n\nThank you for your order with Bags'n'Bags. We have received your order (#${order.orderNumber}) and our atelier is preparing it for shipment.\n\nTotal: $${totalAmount.toFixed(2)} (Cash on Delivery)\n\nWarm regards,\nBags'n'Bags`,
+      text: `Hello ${customerName},\n\nThank you for your order with Bags'n'Bags. We have received your order (#${order.orderNumber}) and our atelier is preparing it for shipment.\n\nTotal: PKR ${totalAmount.toLocaleString()} (${paymentMethodLabel})\n\nWarm regards,\nBags'n'Bags`,
     });
   } catch (emailErr) {
     console.error('Confirmation email error:', emailErr);

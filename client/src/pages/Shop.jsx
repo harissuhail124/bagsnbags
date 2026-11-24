@@ -97,7 +97,7 @@ export default function Shop() {
   };
 
   const hasActiveFilters = Boolean(
-    currentCategory || currentSearch || currentMinPrice || currentMaxPrice || currentColor || currentInStock
+    currentCategory || currentSearch || currentMinPrice || currentMaxPrice || currentInStock
   );
 
   return (
@@ -198,7 +198,7 @@ export default function Shop() {
                 <div className="price-inputs-row">
                   <input
                     type="number"
-                    placeholder="Min $"
+                    placeholder="Min PKR"
                     value={minPriceInput}
                     onChange={(e) => setMinPriceInput(e.target.value)}
                     min="0"
@@ -206,7 +206,7 @@ export default function Shop() {
                   <span className="price-sep">&ndash;</span>
                   <input
                     type="number"
-                    placeholder="Max $"
+                    placeholder="Max PKR"
                     value={maxPriceInput}
                     onChange={(e) => setMaxPriceInput(e.target.value)}
                     min="0"
@@ -233,26 +233,6 @@ export default function Shop() {
                 />
                 <span>In Stock Only</span>
               </label>
-            </div>
-
-            {/* Color Swatch / Tone Filter */}
-            <div className="filter-group">
-              <h4 className="filter-group-title">Tone</h4>
-              <div className="filter-options-list">
-                {['Tan', 'Brown', 'Black', 'Olive', 'Khaki'].map((colorOption) => (
-                  <label key={colorOption} className="filter-checkbox-label">
-                    <input
-                      type="radio"
-                      name="color"
-                      checked={currentColor.toLowerCase() === colorOption.toLowerCase()}
-                      onChange={() =>
-                        updateParam('color', currentColor.toLowerCase() === colorOption.toLowerCase() ? '' : colorOption)
-                      }
-                    />
-                    <span>{colorOption}</span>
-                  </label>
-                ))}
-              </div>
             </div>
           </aside>
         )}

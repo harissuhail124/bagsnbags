@@ -148,11 +148,11 @@ export default function Account() {
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: 500, fontSize: '0.9rem' }}>{item.title}</div>
                           <div style={{ fontSize: '0.78rem', color: 'var(--color-secondary-text)' }}>
-                            Qty: {item.quantity} &middot; ${item.price.toFixed(2)}
+                            Qty: {item.quantity} &middot; PKR {item.price.toLocaleString()}
                           </div>
                         </div>
                         <div style={{ fontWeight: 500 }}>
-                          ${(item.price * item.quantity).toFixed(2)}
+                          PKR {(item.price * item.quantity).toLocaleString()}
                         </div>
                       </div>
                     ))}
@@ -176,7 +176,7 @@ export default function Account() {
                       )}
                     </div>
                     <div style={{ fontWeight: 600, fontSize: '1rem' }}>
-                      Total: ${ord.totalAmount.toFixed(2)}
+                      Total: PKR {ord.totalAmount.toLocaleString()}
                     </div>
                   </div>
                 </div>

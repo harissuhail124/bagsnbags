@@ -114,11 +114,11 @@ export default function OrderConfirmation() {
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 500, fontSize: '0.92rem' }}>{item.title}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--color-secondary-text)' }}>
-                    Qty: {item.quantity} {item.variant ? `(${item.variant})` : ''} &middot; ${item.price.toFixed(2)} each
+                    Qty: {item.quantity} {item.variant ? `(${item.variant})` : ''} &middot; PKR {item.price.toLocaleString()} each
                   </div>
                 </div>
                 <div style={{ fontWeight: 500, fontSize: '0.95rem' }}>
-                  ${(item.price * item.quantity).toFixed(2)}
+                  PKR {(item.price * item.quantity).toLocaleString()}
                 </div>
               </div>
             ))}
@@ -155,15 +155,43 @@ export default function OrderConfirmation() {
               Payment &amp; Status
             </h4>
             <p style={{ fontSize: '0.88rem', color: 'var(--color-primary-text)', lineHeight: 1.5 }}>
-              Method: <strong>{order.paymentMethod === 'stripe' ? 'Stripe Checkout' : 'Cash on Delivery'}</strong><br />
+              Method: <strong>
+                {order.paymentMethod === 'jazzcash'
+                  ? 'JazzCash Mobile Wallet (0300-1234567)'
+                  : order.paymentMethod === 'easypaisa'
+                  ? 'EasyPaisa Mobile Wallet (0345-1234567)'
+                  : order.paymentMethod === 'stripe'
+                  ? 'Stripe Checkout'
+                  : 'Cash on Delivery'}
+              </strong><br />
               Payment Status: <strong>{order.paymentStatus.toUpperCase()}</strong><br />
               Fulfillment: <strong>{order.status.toUpperCase()}</strong>
             </p>
             <div style={{ marginTop: '10px', fontSize: '0.95rem', fontWeight: 600 }}>
-              Total Paid/Due: ${order.totalAmount.toFixed(2)}
+              Total Paid/Due: PKR {order.totalAmount.toLocaleString()}
             </div>
           </div>
         </div>
+
+        {(order.paymentMethod === 'jazzcash' || order.paymentMethod === 'easypaisa') && (
+          <div
+            style={{
+              padding: '14px 18px',
+              backgroundColor: 'var(--color-neutral-muted)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-sm)',
+              marginBottom: 'var(--space-6)',
+              fontSize: '0.88rem',
+              lineHeight: 1.6,
+            }}
+          >
+            <strong>Mobile Transfer Instructions:</strong>
+            <p style={{ margin: '4px 0 0', color: 'var(--color-primary-text)' }}>
+              Please transfer <strong>PKR {order.totalAmount.toLocaleString()}</strong> via your {order.paymentMethod === 'jazzcash' ? 'JazzCash' : 'EasyPaisa'} app to{' '}
+              <strong>{order.paymentMethod === 'jazzcash' ? '0300-1234567' : '0345-1234567'}</strong> (Title: <em>Bags'n'Bags Official</em>) mentioning Order Reference <strong>{order.orderNumber}</strong>. Our atelier team will verify and dispatch your piece promptly.
+            </p>
+          </div>
+        )}
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
           <Link to="/shop" className="btn btn-primary">

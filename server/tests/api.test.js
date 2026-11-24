@@ -106,4 +106,66 @@ describe("Auth, Cart & Order Creation API Tests", () => {
     const updatedProduct = await Product.findById(sampleProduct._id);
     expect(updatedProduct.stock).toBe(initialStock - 1);
   });
+
+  test("5. Order - Create an order with JazzCash payment", async () => {
+    const sampleProduct = await Product.findOne({ stock: { $gt: 2 } });
+    if (!sampleProduct) return;
+
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Cookie', userCookie)
+      .send({
+        customerName: "Ali Khan",
+        customerEmail: "ali.khan@example.com",
+        paymentMethod: "jazzcash",
+        paymentDetails: {
+          accountNumber: "03001234567",
+          transactionId: "JC998877",
+        },
+        items: [{ productId: sampleProduct._id, quantity: 1 }],
+        shippingAddress: {
+          line1: "Gulberg III",
+          city: "Lahore",
+          state: "Punjab",
+          postalCode: "54000",
+          country: "Pakistan",
+        },
+      });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.order).toBeDefined();
+    expect(res.body.order.paymentMethod).toBe('jazzcash');
+    expect(res.body.order.paymentDetails?.accountNumber).toBe('03001234567');
+  });
+
+  test("6. Order - Create an order with EasyPaisa payment", async () => {
+    const sampleProduct = await Product.findOne({ stock: { $gt: 2 } });
+    if (!sampleProduct) return;
+
+    const res = await request(app)
+      .post('/api/orders')
+      .set('Cookie', userCookie)
+      .send({
+        customerName: "Sara Ahmed",
+        customerEmail: "sara.ahmed@example.com",
+        paymentMethod: "easypaisa",
+        paymentDetails: {
+          accountNumber: "03451234567",
+          transactionId: "EP112233",
+        },
+        items: [{ productId: sampleProduct._id, quantity: 1 }],
+        shippingAddress: {
+          line1: "DHA Phase 5",
+          city: "Karachi",
+          state: "Sindh",
+          postalCode: "75500",
+          country: "Pakistan",
+        },
+      });
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body.order).toBeDefined();
+    expect(res.body.order.paymentMethod).toBe('easypaisa');
+    expect(res.body.order.paymentDetails?.accountNumber).toBe('03451234567');
+  });
 });

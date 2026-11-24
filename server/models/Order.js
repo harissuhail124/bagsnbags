@@ -27,7 +27,11 @@ const orderSchema = new mongoose.Schema({
     postalCode: { type: String, required: true },
     country: { type: String, required: true, default: 'US' },
   },
-  paymentMethod: { type: String, enum: ['stripe', 'cod'], required: true },
+  paymentMethod: { type: String, enum: ['stripe', 'cod', 'jazzcash', 'easypaisa'], required: true },
+  paymentDetails: {
+    accountNumber: { type: String },
+    transactionId: { type: String },
+  },
   paymentStatus: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
   status: {
     type: String,
