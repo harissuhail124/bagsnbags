@@ -45,7 +45,6 @@ export default function Footer() {
               <li><Link to="/shop?category=backpacks">Backpacks</Link></li>
               <li><Link to="/shop?category=handbags">Handbags</Link></li>
               <li><Link to="/shop?category=totes">Totes</Link></li>
-              <li><Link to="/shop?category=travel">Travel</Link></li>
               <li><Link to="/shop?category=accessories">Wallets & Small Goods</Link></li>
             </ul>
           </div>

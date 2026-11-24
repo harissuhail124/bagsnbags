@@ -1,16 +1,16 @@
 /* Bags'n'Bags Design System & Global Styles */
 :root {
-  --color-bg: #FAF8F5;
+  --color-bg: #F7F4EE;
   --color-surface: #FFFFFF;
-  --color-primary-text: #2B2623;
-  --color-secondary-text: #6F675F;
-  --color-accent: #8A6F55;
-  --color-accent-hover: #6E5742;
-  --color-border: #E7E2DB;
-  --color-success: #5E7A5A;
-  --color-error: #A5483F;
+  --color-primary-text: #1D1916;
+  --color-secondary-text: #665F57;
+  --color-accent: #9A6A3F;
+  --color-accent-hover: #7E522B;
+  --color-border: #E4DDD3;
+  --color-success: #4A744F;
+  --color-error: #A33F36;
   --color-card-bg: #FFFFFF;
-  --color-neutral-muted: #F2EFEA;
+  --color-neutral-muted: #EDE7DC;
 
   /* Spacing (8px scale) */
   --space-1: 8px;
@@ -211,8 +211,8 @@ input:focus, select:focus, textarea:focus {
 
 /* Announcement Bar */
 .announcement-bar {
-  background-color: #24201D;
-  color: #FAF8F5;
+  background-color: #1C1815;
+  color: #F7F4EE;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;

@@ -49,10 +49,10 @@ export default function Home() {
       image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=900&h=1125&fit=crop&q=80",
     },
     {
-      title: "Travel",
-      slug: "travel",
-      subtitle: "48-hour duffels & garment rolls",
-      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=900&h=1125&fit=crop&q=80",
+      title: "Wallets",
+      slug: "accessories",
+      subtitle: "Bifolds, card sleeves & key pouches",
+      image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=900&h=1125&fit=crop&q=80",
     },
   ];
 

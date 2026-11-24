@@ -31,6 +31,17 @@ export default function ProductDetail() {
   const [reviewComment, setReviewComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
 
+  // Interactive cursor-following zoom
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const [isZooming, setIsZooming] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - left) / width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - top) / height) * 100));
+    setZoomOrigin({ x, y });
+  };
+
   useEffect(() => {
     fetchProductDetails();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -169,12 +180,23 @@ export default function ProductDetail() {
             </div>
           )}
 
-          <div className="gallery-main-frame">
+          <div
+            className="gallery-main-frame"
+            onMouseEnter={() => setIsZooming(true)}
+            onMouseLeave={() => setIsZooming(false)}
+            onMouseMove={handleMouseMove}
+          >
             <img
               src={images[selectedImageIndex]}
               alt={product.title}
-              className="gallery-main-img"
+              className={`gallery-main-img ${isZooming ? 'is-zoomed' : ''}`}
+              style={{
+                transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+              }}
             />
+            {!isZooming && (
+              <span className="gallery-zoom-hint">Roll over to inspect</span>
+            )}
           </div>
         </div>
 

@@ -15,6 +15,9 @@ import {
   X,
   UploadCloud,
   Check,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUp,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -176,6 +179,28 @@ export default function Admin() {
     }));
     setImageUrlInput('');
     toast.success('Image URL added.');
+  };
+
+  // Reorder product images
+  const moveImage = (index, targetIndex) => {
+    if (targetIndex < 0 || targetIndex >= prodForm.images.length) return;
+    setProdForm((prev) => {
+      const nextImages = [...prev.images];
+      const [moved] = nextImages.splice(index, 1);
+      nextImages.splice(targetIndex, 0, moved);
+      return { ...prev, images: nextImages };
+    });
+  };
+
+  const setAsCover = (index) => {
+    if (index === 0) return;
+    setProdForm((prev) => {
+      const nextImages = [...prev.images];
+      const [cover] = nextImages.splice(index, 1);
+      nextImages.unshift(cover);
+      return { ...prev, images: nextImages };
+    });
+    toast.success('Moved to #1 (Cover image).');
   };
 
   // Save product
@@ -899,45 +924,126 @@ export default function Admin() {
                   </button>
                 </div>
 
-                {/* Thumbnail Preview Grid */}
+                {/* Reorderable Thumbnail Grid */}
                 {prodForm.images.length > 0 ? (
-                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
-                    {prodForm.images.map((url, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          position: 'relative',
-                          width: '64px',
-                          aspectRatio: '4 / 5',
-                          borderRadius: 'var(--radius-sm)',
-                          overflow: 'hidden',
-                          border: '1px solid var(--color-border)',
-                          backgroundColor: 'var(--color-neutral-muted)',
-                        }}
-                      >
-                        <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        <button
-                          type="button"
-                          onClick={() => setProdForm({ ...prodForm, images: prodForm.images.filter((_, i) => i !== idx) })}
+                  <div>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--color-secondary-text)', marginBottom: '8px' }}>
+                      <strong>Photo Sequence:</strong> #1 is the primary store cover; #2 is revealed on hover. Use arrows or &quot;Make Cover&quot; to change order.
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '10px' }}>
+                      {prodForm.images.map((url, idx) => (
+                        <div
+                          key={idx}
                           style={{
-                            position: 'absolute',
-                            top: 2,
-                            right: 2,
-                            background: 'rgba(43, 38, 35, 0.75)',
-                            color: '#FFFFFF',
-                            borderRadius: '50%',
-                            width: '18px',
-                            height: '18px',
                             display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            flexDirection: 'column',
+                            border: idx === 0 ? '2px solid var(--color-accent)' : '1px solid var(--color-border)',
+                            borderRadius: 'var(--radius-sm)',
+                            overflow: 'hidden',
+                            backgroundColor: 'var(--color-surface)',
+                            position: 'relative',
                           }}
-                          title="Remove image"
                         >
-                          <X size={11} />
-                        </button>
-                      </div>
-                    ))}
+                          {/* Image preview with badge */}
+                          <div style={{ position: 'relative', width: '100%', aspectRatio: '4 / 5', backgroundColor: 'var(--color-neutral-muted)' }}>
+                            <img src={url} alt={`Photo ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            
+                            <span
+                              style={{
+                                position: 'absolute',
+                                top: 4,
+                                left: 4,
+                                background: idx === 0 ? 'var(--color-accent)' : 'rgba(43, 38, 35, 0.85)',
+                                color: '#FFFFFF',
+                                fontSize: '0.65rem',
+                                fontWeight: 600,
+                                padding: '2px 6px',
+                                borderRadius: '2px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                              }}
+                            >
+                              {idx === 0 ? '#1 Cover' : idx === 1 ? '#2 Hover' : `#${idx + 1}`}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={() => setProdForm({ ...prodForm, images: prodForm.images.filter((_, i) => i !== idx) })}
+                              style={{
+                                position: 'absolute',
+                                top: 4,
+                                right: 4,
+                                background: 'rgba(165, 72, 63, 0.9)',
+                                color: '#FFFFFF',
+                                borderRadius: '50%',
+                                width: '18px',
+                                height: '18px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                              }}
+                              title="Delete photo"
+                            >
+                              <X size={11} />
+                            </button>
+                          </div>
+
+                          {/* Reordering Controls */}
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px', backgroundColor: 'var(--color-bg)', borderTop: '1px solid var(--color-border)' }}>
+                            <button
+                              type="button"
+                              onClick={() => moveImage(idx, idx - 1)}
+                              disabled={idx === 0}
+                              style={{
+                                opacity: idx === 0 ? 0.3 : 1,
+                                padding: '3px 6px',
+                                background: 'var(--color-surface)',
+                                border: '1px solid var(--color-border)',
+                                borderRadius: '2px',
+                              }}
+                              title="Move photo earlier in order"
+                            >
+                              <ChevronLeft size={13} />
+                            </button>
+
+                            {idx !== 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setAsCover(idx)}
+                                style={{
+                                  fontSize: '0.65rem',
+                                  textTransform: 'uppercase',
+                                  fontWeight: 600,
+                                  color: 'var(--color-accent)',
+                                  padding: '2px 4px',
+                                  border: 'none',
+                                  background: 'transparent',
+                                }}
+                                title="Set as primary cover photo"
+                              >
+                                Set #1
+                              </button>
+                            )}
+
+                            <button
+                              type="button"
+                              onClick={() => moveImage(idx, idx + 1)}
+                              disabled={idx === prodForm.images.length - 1}
+                              style={{
+                                opacity: idx === prodForm.images.length - 1 ? 0.3 : 1,
+                                padding: '3px 6px',
+                                background: 'var(--color-surface)',
+                                border: '1px solid var(--color-border)',
+                                borderRadius: '2px',
+                              }}
+                              title="Move photo later in order"
+                            >
+                              <ChevronRight size={13} />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <p style={{ fontSize: '0.78rem', color: 'var(--color-secondary-text)', fontStyle: 'italic', margin: '4px 0 0' }}>

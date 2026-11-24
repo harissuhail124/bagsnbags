@@ -57,8 +57,8 @@ export default function Header() {
               <NavLink to="/shop?category=totes" className="nav-link">
                 Totes
               </NavLink>
-              <NavLink to="/shop?category=travel" className="nav-link">
-                Travel
+              <NavLink to="/shop?category=accessories" className="nav-link">
+                Wallets
               </NavLink>
               <NavLink to="/about" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                 About
@@ -138,8 +138,7 @@ export default function Header() {
           <Link to="/shop?category=backpacks" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Backpacks</Link>
           <Link to="/shop?category=handbags" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Handbags</Link>
           <Link to="/shop?category=totes" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Totes</Link>
-          <Link to="/shop?category=travel" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Travel</Link>
-          <Link to="/shop?category=accessories" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Small Goods</Link>
+          <Link to="/shop?category=accessories" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Wallets</Link>
           <Link to="/about" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>About Our Craft</Link>
           <Link to="/contact" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           {user ? (

@@ -69,7 +69,7 @@ export default function App() {
               <Route path="/backpacks" element={<Navigate to="/shop?category=backpacks" replace />} />
               <Route path="/handbags" element={<Navigate to="/shop?category=handbags" replace />} />
               <Route path="/totes" element={<Navigate to="/shop?category=totes" replace />} />
-              <Route path="/travel" element={<Navigate to="/shop?category=travel" replace />} />
+              <Route path="/wallets" element={<Navigate to="/shop?category=accessories" replace />} />
 
               <Route path="/product/:slug" element={<ProductDetail />} />
               <Route path="/cart" element={<CartPage />} />
