@@ -1,16 +1,23 @@
+const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const User = require('../models/User');
 
+// Ensure uploads directory exists on disk
+const uploadDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Configure multer storage for admin uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'uploads'));
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, 'prod-' + uniqueSuffix + ext);
   },
@@ -18,15 +25,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit per image
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|avif/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    if (mimetype && extname) {
+    if (file.mimetype && file.mimetype.startsWith('image/')) {
       return cb(null, true);
     }
-    cb(new Error('Only image files (jpeg, jpg, png, webp, avif) are supported.'));
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (/^\.(jpe?g|png|webp|avif|gif|svg)$/i.test(ext)) {
+      return cb(null, true);
+    }
+    cb(new Error('Only image files (JPEG, PNG, WebP, AVIF, GIF, SVG) are allowed.'));
   },
 });
 
@@ -98,7 +106,7 @@ const listCustomers = async (req, res) => {
 // Admin: handle multi-image upload
 const handleImageUpload = (req, res) => {
   if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ error: { message: 'No image files uploaded', statusCode: 400 } });
+    return res.status(400).json({ error: { message: 'No image files received.', statusCode: 400 } });
   }
 
   const urls = req.files.map((file) => `/uploads/${file.filename}`);

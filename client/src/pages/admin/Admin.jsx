@@ -61,6 +61,7 @@ export default function Admin() {
     images: [],
   });
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [imageUrlInput, setImageUrlInput] = useState('');
 
   // Category form
   const [catForm, setCatForm] = useState({ name: '', imageUrl: '', description: '' });
@@ -147,19 +148,34 @@ export default function Admin() {
     setUploadingImages(true);
     try {
       const res = await axios.post('/api/admin/upload', data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true,
       });
-      setProdForm((prev) => ({
-        ...prev,
-        images: [...prev.images, ...(res.data.urls || [])],
-      }));
-      toast.success('Images uploaded successfully.');
+      const newUrls = res.data?.urls || [];
+      if (newUrls.length > 0) {
+        setProdForm((prev) => ({
+          ...prev,
+          images: [...prev.images, ...newUrls],
+        }));
+        toast.success(`${newUrls.length} ${newUrls.length === 1 ? 'image' : 'images'} uploaded successfully.`);
+      }
     } catch (err) {
-      toast.error('Image upload failed.');
+      const msg = err.response?.data?.error?.message || 'Image upload failed. Please verify the file is a valid image.';
+      toast.error(msg);
     } finally {
       setUploadingImages(false);
+      e.target.value = '';
     }
+  };
+
+  const handleAddImageUrl = (e) => {
+    e.preventDefault();
+    if (!imageUrlInput.trim()) return;
+    setProdForm((prev) => ({
+      ...prev,
+      images: [...prev.images, imageUrlInput.trim()],
+    }));
+    setImageUrlInput('');
+    toast.success('Image URL added.');
   };
 
   // Save product
@@ -844,33 +860,89 @@ export default function Admin() {
                 ></textarea>
               </div>
 
-              {/* Multi-Image Upload */}
+              {/* Multi-Image Upload & URL Input */}
               <div className="form-group">
-                <label>Product Photography (Multi-Image Upload)</label>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageFileChange}
-                  disabled={uploadingImages}
-                />
-                {uploadingImages && <p style={{ fontSize: '0.78rem' }}>Uploading photos to /server/uploads...</p>}
+                <label>Product Photography * (Upload files or add direct URLs)</label>
+                
+                {/* 1. File Upload Button */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageFileChange}
+                    disabled={uploadingImages}
+                    style={{ flex: 1, padding: '6px' }}
+                  />
+                  {uploadingImages && (
+                    <span style={{ fontSize: '0.8rem', color: 'var(--color-accent)', whiteSpace: 'nowrap' }}>
+                      Uploading...
+                    </span>
+                  )}
+                </div>
 
-                {prodForm.images.length > 0 && (
+                {/* 2. Direct URL Input */}
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                  <input
+                    type="text"
+                    placeholder="Or paste an image URL (e.g. Unsplash, CDN)..."
+                    value={imageUrlInput}
+                    onChange={(e) => setImageUrlInput(e.target.value)}
+                    style={{ flex: 1, fontSize: '0.85rem' }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    onClick={handleAddImageUrl}
+                  >
+                    Add URL
+                  </button>
+                </div>
+
+                {/* Thumbnail Preview Grid */}
+                {prodForm.images.length > 0 ? (
                   <div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
                     {prodForm.images.map((url, idx) => (
-                      <div key={idx} style={{ position: 'relative', width: '60px', aspectRatio: '4/5' }}>
+                      <div
+                        key={idx}
+                        style={{
+                          position: 'relative',
+                          width: '64px',
+                          aspectRatio: '4 / 5',
+                          borderRadius: 'var(--radius-sm)',
+                          overflow: 'hidden',
+                          border: '1px solid var(--color-border)',
+                          backgroundColor: 'var(--color-neutral-muted)',
+                        }}
+                      >
                         <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         <button
                           type="button"
                           onClick={() => setProdForm({ ...prodForm, images: prodForm.images.filter((_, i) => i !== idx) })}
-                          style={{ position: 'absolute', top: 0, right: 0, background: 'rgba(0,0,0,0.6)', color: '#fff' }}
+                          style={{
+                            position: 'absolute',
+                            top: 2,
+                            right: 2,
+                            background: 'rgba(43, 38, 35, 0.75)',
+                            color: '#FFFFFF',
+                            borderRadius: '50%',
+                            width: '18px',
+                            height: '18px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          title="Remove image"
                         >
-                          <X size={12} />
+                          <X size={11} />
                         </button>
                       </div>
                     ))}
                   </div>
+                ) : (
+                  <p style={{ fontSize: '0.78rem', color: 'var(--color-secondary-text)', fontStyle: 'italic', margin: '4px 0 0' }}>
+                    No photos attached yet. Please upload at least one image or enter an image URL.
+                  </p>
                 )}
               </div>
 

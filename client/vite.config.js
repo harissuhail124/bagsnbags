@@ -12,6 +12,12 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      // Proxy static uploaded images to Express backend
+      '/uploads': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });
